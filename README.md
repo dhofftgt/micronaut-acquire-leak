@@ -7,13 +7,13 @@ the MicronautAcquireLeakTest reproduces the issue and the following conditions
 
 * max connections is set for the client
 * the @Client returns a future with a POJO Deserialized from JSON
-* the netty client thread is unresponsive (I added a sleep() in the thenApply on the future. Note it is odd that this is executed on the netty thread, not the IO executor)
+* the netty client thread is unresponsive (I added a latch in the thenApply on the @client future. Note it is odd that this is executed on the netty thread, not the IO executor)
 
 The test executes like this:
 
 * The test spits out a bunch of http client requests
 * The code executing in the thenApply will block causing the netty client threads to hang and become unresponsive
-* HttpClientIntroductionAdvice will give up 1 second after the netty read timeout and throw io.micronaut.http.client.exceptions.ReadTimeoutException
+* DefaultHttpClient has an additional timeout that will give up 1 second after the netty read timeout and throw io.micronaut.http.client.exceptions.ReadTimeoutException
 * we wait 5 seconds to make sure things have timed out then release the latch so the client become responsive again
 * wait for client to be idle by checking the pendingTasks() is 0
 * acquiredChannels should be 0, but it's not.
