@@ -1,6 +1,22 @@
 micronaut:
   application:
     name: micronautAcquireLeak
+  server:
+    port: 8080
+  http:
+    http:
+      client:
+        num-of-threads: 1
+    services:
+      sample-http-client:
+        urls:
+          - http://localhost:8080
+        read-timeout: 100ms
+        connect-ttl: 5m
+        pool:
+          enabled: true
+          max-connections: 10
+
 netty:
   default:
     allocator:

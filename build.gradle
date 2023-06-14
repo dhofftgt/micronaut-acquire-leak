@@ -12,10 +12,15 @@ repositories {
 
 dependencies {
     annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut:micronaut-inject-java")
+    implementation("io.micronaut:micronaut-http-server")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-jackson-databind")
     implementation("jakarta.annotation:jakarta.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
+
+    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
+    testImplementation "org.assertj:assertj-core:3.24.2"
 }
 
 application {
